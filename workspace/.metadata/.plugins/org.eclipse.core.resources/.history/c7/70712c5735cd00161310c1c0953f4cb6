@@ -1,0 +1,151 @@
+/*
+ * vga_util.c
+ *
+ *  Created on: 28 dec 2016
+ *      Author: root
+ */
+#include <alt_types.h>
+
+void print_pix(alt_u32 x,alt_u32 y,alt_u32 rgb)
+{
+	if(rgb <= 7 && rgb >= 0)
+		set_pixel(x,y,rgb);
+	else
+		set_pixel(x,y,0);
+}
+void print_hline(alt_u32 x_start,alt_u32 y_start, alt_u32 len,alt_u32 RGB){
+
+
+
+	if(x_start + len <= 320){
+		for(int i = 0; i < len; i++){
+			print_pix(x_start + i,y_start, RGB);
+		}
+	}
+	else{
+
+		for(int i = 0; i < (320-x_start); i++){
+					print_pix(x_start + i,y_start, RGB);
+		}
+	}
+
+}
+void print_vline(alt_u32 x_start,alt_u32 y_start, alt_u32 len, alt_u32 RGB)
+{
+	if(y_start + len <= 240){
+			for(int i = 0; i < len; i++){
+				print_pix(x_start,y_start + i, RGB);
+			}
+		}
+		else{
+
+			for(int i = 0; i < (240-y_start); i++){
+						print_pix(x_start,y_start +i , RGB);
+			}
+		}
+}
+
+void  print_char(alt_u32 x,alt_u32 y,alt_u32 rgb,alt_u32 BG_RGB,char Character)
+{
+	alt_u8 temp;
+	int row;
+
+	alt_u8  token = (alt_8)Character;
+	for (row = 0; row <8; row++)
+	{
+			temp =  (alt_8)font8x8_basic[token][row];
+
+			for (int pos = 0 ; pos != 8 ; pos++) {
+			    if (temp & (1 << pos)) {
+			        // Current bit is set to 1
+			    	print_pix(x+pos,y+row,rgb);
+			    } else {
+			        // Current bit is set to 0
+			    	print_pix(x+pos,y+row,BG_RGB);
+			    }
+			}
+	}
+}
+void print_str(alt_u32 x_start, alt_u32 y_start,alt_u32 rgb,char *str)
+{
+	alt_u16 len = (alt_u16) strlen(str);
+	alt_u16 i;
+	for(i=0; i< len; i++){
+		print_char(x_start + i*8,y_start,rgb,0,str[i]);
+	}
+}
+
+void print_symmetry_dots_circle(alt_u32 x, alt_u32 y, alt_u32 x_centrum, alt_u32 y_centrum, alt_u32 rgb)
+{
+		print_pix(x+x_centrum,y + y_centrum,rgb);
+		print_pix(x+x_centrum,-y + y_centrum,rgb);
+		print_pix(-x+x_centrum,y + y_centrum,rgb);
+		print_pix(-x+x_centrum,-y + y_centrum,rgb);
+
+		print_pix(y + x_centrum,x+y_centrum,rgb);
+		print_pix(-y + x_centrum,x+y_centrum,rgb);
+		print_pix(y + x_centrum,-x+y_centrum,rgb);
+		print_pix(-y + x_centrum,-x+y_centrum,rgb);
+
+}
+void print_empty_circle(alt_u32 radie, alt_u32 x_centrum, alt_u32 y_centrum, alt_u32 rgb)
+{
+		//unsigned int value;
+		//unsigned int radius = radie;
+		int x = 0;
+		int y = radie;
+
+		print_symmetry_dots_circle(x,y,x_centrum,y_centrum,rgb);
+		int h = 1- radie;
+		while(y > x){
+			if (h < 0){//east point
+
+				print_symmetry_dots_circle(x+1,y,x_centrum,y_centrum,rgb);
+				h = h +2*x +3;
+				x= x+1;
+
+			}
+			else{
+				print_symmetry_dots_circle(x+1,y-1,x_centrum,y_centrum,rgb);
+				h= h+2*(x-y)+5;
+				y=y-1;
+				x=x+1;
+			}
+
+		}
+}
+void print_circle(alt_u32 radie, alt_u32 x_centrum, alt_u32 y_centrum, alt_u32 rgb)
+{
+	unsigned int radius = radie;
+
+	for(radius = radie; radius > 0; radius--)
+		print_empty_circle(radius,x_centrum, y_centrum, rgb);
+}
+void clear_screen(alt_u32 rgb){
+	for(int y = 0 ;y <240;y++)
+		for(int x = 0; x < 320; x++)
+			print_pix(x,y,rgb);
+}
+
+pixel_data read_pixel_ram_int(alt_u32 x_start, alt_u32 y_start)
+{
+	alt_u32 i = read_pixel(x_start, y_start);
+	return (alt_u8) i;
+}
+
+
+
+void print_welcome_screen(){
+	clear_screen(0);
+
+	print_circle(10,  320/2, 240/2, 3);
+	print_str(50,50,2,"Welcome to measurement station!");
+	print_str(50,150,2,"Press any key to continue");
+	alt_u32 key = 0;
+	key = IORD_32DIRECT(KEY_INPUT_BASE,0);
+	//alt_printf("key = %d", key);
+	while(key == 7)
+		key = IORD_32DIRECT(KEY_INPUT_BASE,0);
+
+
+}

@@ -1,0 +1,225 @@
+/*
+ * "Hello World" example.
+ *
+ * This example prints 'Hello from Nios II' to the STDOUT stream. It runs on
+ * the Nios II 'standard', 'full_featured', 'fast', and 'low_cost' example
+ * designs. It runs with or without the MicroC/OS-II RTOS and requires a STDOUT
+ * device in your system's hardware.
+ * The memory footprint of this hosted application is ~69 kbytes by default
+ * using the standard reference design.
+ *
+ * For a reduced footprint version of this template, and an explanation of how
+ * to reduce the memory footprint for a given application, see the
+ * "small_hello_world" template.
+ *
+ */
+
+
+#include <stdio.h>
+#include <system.h>
+#include <io.h>
+#include <alt_types.h>
+#include <BeMicro_VGA_IP_Driver.h>
+
+#include "vga_util.h"
+#include "sensor.h"
+
+#include <altera_avalon_spi.h>
+#include <altera_avalon_spi_regs.h>
+
+#include <altera_avalon_timer_regs.h>
+
+
+#include <string.h>
+
+
+enum sampling_state  {five_Hz_sampling, one_Hz_sampling,dot2_Hz_sampling};
+
+
+int main()
+{
+	print_welcome_screen();
+	int sub_seconds = 0;
+	enum sampling_state state = one_Hz_sampling;
+	QUEUE q1;
+	//QUEUE q2;
+	//QUEUE q3;
+	QUEUE q4;
+	QUEUE q5;
+	QUEUE* q11 = &q1;
+	//QUEUE* q22 = &q2;
+	//QUEUE* q33 = &q3;
+	QUEUE* q44 = &q4;
+	QUEUE* q55 = &q5;
+
+
+
+	SENSOR_OBJECT accelorometerX =
+		{	"Accelerom. x",
+			30, 50,1,1,25,4, q1,q11,
+			config_time_base,
+			init_measurement,
+			read_accelerometerX,
+			update_graph,
+			&accelorometerX,
+			draw_graph
+		};
+
+	/*SENSOR_OBJECT accelorometerY =
+					{	"Accelerom. y",
+						320/3 +30, 50,1,1,20,4, q2,q22,
+						config_time_base,
+						init_measurement,
+						read_accelerometerY,
+						update_graph,
+						&accelorometerY,
+						draw_graph
+					};
+
+	SENSOR_OBJECT accelorometerZ =
+				{	"Accelerom. z",
+					2*320/3 +30, 50,1,1,60,4, q3,q33,
+					config_time_base,
+					init_measurement,
+					read_accelerometerZ,
+					update_graph,
+					&accelorometerZ,
+					draw_graph
+				};
+*/
+	SENSOR_OBJECT temp_sensor =
+					{	"Temperature",
+						30, 180,1,100,10,4, q4,q44,
+						config_time_base,
+						init_measurement,
+						read_temp,
+						update_graph,
+						&temp_sensor,
+						draw_graph
+					};
+
+	SENSOR_OBJECT light_sensor =
+						{	"Light",
+							320/3 +30, 180,1,100,10,4, q5,q55,
+							config_time_base,
+							init_measurement,
+							read_light,
+							update_graph,
+							&light_sensor,
+							draw_graph
+						};
+
+/*SENSOR_OBJECT sensors[5]={accelorometerX,
+							accelorometerY,
+							accelorometerZ,
+							temp_sensor,
+							light_sensor};*/
+
+	SENSOR_OBJECT sensors[3]={accelorometerX,
+								temp_sensor,
+								light_sensor};
+
+
+
+		for(int i = 0; i < 78600; i++)
+			set_address_pixel(i, 0);
+
+		print_hline(0,120,320,6);
+		print_vline(320/3,0,240,6);
+		print_vline(2*320/3,0,240,6);
+
+		print_str(2*320/3 +5,210-60,5,"1st btn 5Hz");
+		print_str(2*320/3 +5,210-30,5,"2nd btn 1Hz");
+		print_str(2*320/3 +5,210,5,"3d btn .2Hz");
+		print_str(2*320/3 +5,230,5,"L.Karagiannis");
+
+
+		for(int i = 0; i<3; i++)
+			sensors[i].init_measurement(&sensors[i]);
+
+	while(1){
+
+
+		if(IORD_32DIRECT(KEY_INPUT_BASE,0) == 6)//first button
+			state = five_Hz_sampling;
+		if(IORD_32DIRECT(KEY_INPUT_BASE,0) == 5)//snd button
+			state = one_Hz_sampling;
+		if(IORD_32DIRECT(KEY_INPUT_BASE,0) == 3)//third button
+					state = dot2_Hz_sampling;
+
+		switch(state){
+		case five_Hz_sampling:
+#ifdef DEBUG
+			alt_printf("5Hz sampling\n");
+
+#endif
+			print_str(2*320/3 +5,210-60,2,"1st btn 5Hz");
+			print_str(2*320/3 +5,210-30,5,"2nd btn 1Hz");
+			print_str(2*320/3 +5,210,5,"3d btn .2Hz");
+			TIMER_RESET;
+			TIMER_START;
+			while(TIMER_READ < 100000);
+			sub_seconds++;
+			if(sub_seconds == 5){
+			update_time(1);
+			sub_seconds = 0;
+			}
+
+			for(int i = 0; i<3; i++){
+				sensors[i].configure_time_base(1,&sensors[i]);
+				sensors[i].read_sensor(sensors[i].q);
+				sensors[i].update_graph(&sensors[i]);
+			}
+			break;
+
+		case one_Hz_sampling:
+#ifdef DEBUG
+			alt_printf("slow\n");
+
+#endif
+			print_str(2*320/3 +5,210-60,5,"1st btn 5Hz");
+			print_str(2*320/3 +5,210-30,2,"2nd btn 1Hz");
+			print_str(2*320/3 +5,210,5,"3d btn .2Hz");
+			TIMER_RESET;
+			TIMER_START;
+				while(TIMER_READ < 50000000);
+				update_time(1);
+				TIMER_RESET;
+				TIMER_START;
+
+			for(int i = 0; i<3; i++){
+				sensors[i].configure_time_base(10,&sensors[i]);
+				sensors[i].read_sensor(sensors[i].q);
+				sensors[i].update_graph(&sensors[i]);
+			}
+           break;
+
+
+		case dot2_Hz_sampling:
+		#ifdef DEBUG
+					alt_printf("0.5 sampling rate\n");
+
+		#endif
+					print_str(2*320/3 +5,210-60,5,"1st btn 5Hz");
+					print_str(2*320/3 +5,210-30,5,"2nd btn 1Hz");
+					print_str(2*320/3 +5,210,2,"3d btn .2Hz");
+					for(int i = 0; i < 5; i++){
+					TIMER_RESET;
+					TIMER_START;
+
+						while(TIMER_READ < 50000000);
+						update_time(1);
+					}
+
+
+					for(int i = 0; i<3; i++){
+						sensors[i].configure_time_base(10,&sensors[i]);
+						sensors[i].read_sensor(sensors[i].q);
+						sensors[i].update_graph(&sensors[i]);
+					}
+		           break;
+		}
+	}
+
+	return 0;
+}

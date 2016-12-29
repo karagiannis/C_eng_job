@@ -142,7 +142,9 @@ ACDS_VERSION := 16.0
 ELF := C_eng_job.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := hello_world.c
+C_SRCS += hello_world.c
+C_SRCS += vga_util.c
+C_SRCS += sensor.c
 CXX_SRCS :=
 ASM_SRCS :=
 

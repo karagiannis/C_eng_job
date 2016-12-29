@@ -1,9 +1,15 @@
-18:48:14 **** Incremental Build of configuration Nios II for project C_eng_job ****
+22:56:04 **** Incremental Build of configuration Nios II for project C_eng_job ****
 make all 
 Info: Building ../C_eng_job_bsp/
 C:/altera_lite/16.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../C_eng_job_bsp/
 [BSP build complete]
-[C_eng_job build complete]
+Info: Linking C_eng_job.elf
+nios2-elf-g++  -T'../C_eng_job_bsp//linker.x' -msys-crt0='../C_eng_job_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../C_eng_job_bsp/  -msmallc  -Wl,-Map=C_eng_job.map   -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o C_eng_job.elf obj/default/hello_world.o obj/default/sensor.o obj/default/vga_util.o -lm -msys-lib=m
+obj/default/vga_util.o:(.data+0x0): multiple definition of `font8x8_basic'
+obj/default/hello_world.o:(.data+0x0): first defined here
+c:/altera_lite/16.0/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/5.2.0/../../../../../H-x86_64-mingw32/nios2-elf/bin/ld.exe: Disabling relaxation: it will not work with multiple definitions
+collect2.exe: error: ld returned 1 exit status
+make: *** [C_eng_job.elf] Error 1
 
-18:48:15 Build Finished (took 713ms)
+22:56:07 Build Finished (took 2s.815ms)
 

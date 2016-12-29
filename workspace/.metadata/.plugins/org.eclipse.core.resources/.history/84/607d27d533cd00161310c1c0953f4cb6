@@ -1,0 +1,27 @@
+/*
+ * queue.h
+ *
+ *  Created on: 28 dec 2016
+ *      Author: root
+ */
+
+#ifndef QUEUE_H_
+#define QUEUE_H_
+
+#define QUEUESIZE 10
+#include "sensor_class.h"
+
+typedef struct myQUEUE
+{
+    int items[QUEUESIZE];
+    int rindex;
+    int windex;
+    int numitems;
+}QUEUE;
+
+void queue_init(QUEUE *q);
+int queue_enqueue(QUEUE *q,int item);
+int queue_dequeue(QUEUE *q);
+void queue_print(QUEUE *q);
+
+#endif /* QUEUE_H_ */

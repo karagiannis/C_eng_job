@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>2016-dec-18 00:46:38</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1482018398974</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>2016-dec-28 21:04:40</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1482955480722</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\root\Documents\Test_area-debug\TEIS-51fc541f4b82b330dfbc279f73cc6cecf32eecc2\C-kurs\Task12\HW_C_engjob\HW_C_ingjob\software\C_eng_job_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\Engineering_job_emb_sys.sopcinfo</SopcDesignFile>
@@ -314,7 +314,7 @@
                 <SettingName>hal.make.bsp_cflags_debug</SettingName>
                 <Identifier>BSP_CFLAGS_DEBUG</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>none</Value>
+                <Value>-g</Value>
                 <DefaultValue>-g</DefaultValue>
                 <DestinationFile>makefile_variable</DestinationFile>
                 <Description>C/C++ compiler debug level. '-g' provides the default set of debug symbols typically required to debug a typical application. Omitting '-g' removes debug symbols from the ELF. This setting defines the value of BSP_CFLAGS_DEBUG in Makefile.</Description>
