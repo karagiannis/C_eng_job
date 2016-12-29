@@ -1,15 +1,113 @@
-22:56:04 **** Incremental Build of configuration Nios II for project C_eng_job ****
+23:10:03 **** Build of configuration Nios II for project C_eng_job ****
 make all 
 Info: Building ../C_eng_job_bsp/
 C:/altera_lite/16.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../C_eng_job_bsp/
 [BSP build complete]
+Info: Compiling hello_world.c to obj/default/hello_world.o
+nios2-elf-gcc -xc -MP -MMD -c -I../C_eng_job_bsp//HAL/inc -I../C_eng_job_bsp/ -I../C_eng_job_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_C_PLUS_PLUS -DALT_USE_DIRECT_DRIVERS -DALT_NO_INSTRUCTION_EMULATION -DALT_USE_SMALL_DRIVERS -DSMALL_C_LIB -DALT_SINGLE_THREADED -DALTERA_AVALON_JTAG_UART_SMALL    -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/hello_world.o hello_world.c
+hello_world.c: In function 'main':
+hello_world.c:59:4: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+    init_measurement,
+    ^
+hello_world.c:59:4: note: (near initialization for 'accelorometerX.configure_time_base')
+hello_world.c:60:4: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+    read_accelerometerX,
+    ^
+hello_world.c:60:4: note: (near initialization for 'accelorometerX.init_measurement')
+hello_world.c:61:4: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+    update_graph,
+    ^
+hello_world.c:61:4: note: (near initialization for 'accelorometerX.read_sensor')
+hello_world.c:62:4: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+    &accelorometerX,
+    ^
+hello_world.c:62:4: note: (near initialization for 'accelorometerX.update_graph')
+hello_world.c:63:4: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+    draw_graph
+    ^
+hello_world.c:63:4: note: (near initialization for 'accelorometerX.draw_graph')
+hello_world.c:92:7: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+       init_measurement,
+       ^
+hello_world.c:92:7: note: (near initialization for 'temp_sensor.configure_time_base')
+hello_world.c:93:7: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+       read_temp,
+       ^
+hello_world.c:93:7: note: (near initialization for 'temp_sensor.init_measurement')
+hello_world.c:94:7: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+       update_graph,
+       ^
+hello_world.c:94:7: note: (near initialization for 'temp_sensor.read_sensor')
+hello_world.c:95:7: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+       &temp_sensor,
+       ^
+hello_world.c:95:7: note: (near initialization for 'temp_sensor.update_graph')
+hello_world.c:96:7: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+       draw_graph
+       ^
+hello_world.c:96:7: note: (near initialization for 'temp_sensor.draw_graph')
+hello_world.c:103:8: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+        init_measurement,
+        ^
+hello_world.c:103:8: note: (near initialization for 'light_sensor.configure_time_base')
+hello_world.c:104:8: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+        read_light,
+        ^
+hello_world.c:104:8: note: (near initialization for 'light_sensor.init_measurement')
+hello_world.c:105:8: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+        update_graph,
+        ^
+hello_world.c:105:8: note: (near initialization for 'light_sensor.read_sensor')
+hello_world.c:106:8: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+        &light_sensor,
+        ^
+hello_world.c:106:8: note: (near initialization for 'light_sensor.update_graph')
+hello_world.c:107:8: warning: initialization from incompatible pointer type [-Wincompatible-pointer-types]
+        draw_graph
+        ^
+hello_world.c:107:8: note: (near initialization for 'light_sensor.draw_graph')
+Info: Compiling sensor.c to obj/default/sensor.o
+nios2-elf-gcc -xc -MP -MMD -c -I../C_eng_job_bsp//HAL/inc -I../C_eng_job_bsp/ -I../C_eng_job_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_C_PLUS_PLUS -DALT_USE_DIRECT_DRIVERS -DALT_NO_INSTRUCTION_EMULATION -DALT_USE_SMALL_DRIVERS -DSMALL_C_LIB -DALT_SINGLE_THREADED -DALTERA_AVALON_JTAG_UART_SMALL    -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/sensor.o sensor.c
+sensor.c: In function 'queue_print_screen':
+sensor.c:94:11: warning: implicit declaration of function 'print_pix' [-Wimplicit-function-declaration]
+           print_pix(x_origo + j, y_origo-k,0);//Blank out previous measurement
+           ^
+sensor.c:113:35: warning: implicit declaration of function 'abs' [-Wimplicit-function-declaration]
+               alt_32  bcd = i2bcd(abs(q->items[0]));
+                                   ^
+sensor.c:115:16: warning: implicit declaration of function 'print_char' [-Wimplicit-function-declaration]
+                print_char(x_origo +24, y_origo+30,4,0,'-');
+                ^
+sensor.c: In function 'draw_graph':
+sensor.c:262:3: warning: implicit declaration of function 'print_hline' [-Wimplicit-function-declaration]
+   print_hline(sensor_obj->x_origo,sensor_obj->y_origo,60,7);
+   ^
+sensor.c:265:3: warning: implicit declaration of function 'print_vline' [-Wimplicit-function-declaration]
+   print_vline(sensor_obj->x_origo-1,sensor_obj->y_origo -45,45,7);
+   ^
+sensor.c:267:3: warning: implicit declaration of function 'print_str' [-Wimplicit-function-declaration]
+   print_str(sensor_obj->x_origo -20, sensor_obj->y_origo +10,7,sensor_obj->description);
+   ^
+sensor.c: In function 'read_accelerometerX':
+sensor.c:302:14: warning: passing argument 6 of 'alt_avalon_spi_command' from incompatible pointer type [-Wincompatible-pointer-types]
+           3, &accel_data,
+              ^
+In file included from sensor.h:18:0,
+                 from sensor.c:8:
+../C_eng_job_bsp//drivers/inc/altera_avalon_spi.h:67:5: note: expected 'alt_u8 * {aka unsigned char *}' but argument is of type 'ACCELEROMETER * {aka struct mystruct *}'
+ int alt_avalon_spi_command(alt_u32 base, alt_u32 slave,
+     ^
+Info: Compiling vga_util.c to obj/default/vga_util.o
+nios2-elf-gcc -xc -MP -MMD -c -I../C_eng_job_bsp//HAL/inc -I../C_eng_job_bsp/ -I../C_eng_job_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_C_PLUS_PLUS -DALT_USE_DIRECT_DRIVERS -DALT_NO_INSTRUCTION_EMULATION -DALT_USE_SMALL_DRIVERS -DSMALL_C_LIB -DALT_SINGLE_THREADED -DALTERA_AVALON_JTAG_UART_SMALL    -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o obj/default/vga_util.o vga_util.c
 Info: Linking C_eng_job.elf
 nios2-elf-g++  -T'../C_eng_job_bsp//linker.x' -msys-crt0='../C_eng_job_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../C_eng_job_bsp/  -msmallc  -Wl,-Map=C_eng_job.map   -O0 -g -Wall   -mno-hw-div -mno-hw-mul -mno-hw-mulx  -o C_eng_job.elf obj/default/hello_world.o obj/default/sensor.o obj/default/vga_util.o -lm -msys-lib=m
 obj/default/vga_util.o:(.data+0x0): multiple definition of `font8x8_basic'
 obj/default/hello_world.o:(.data+0x0): first defined here
 c:/altera_lite/16.0/nios2eds/bin/gnu/h-x86_64-mingw32/bin/../lib/gcc/nios2-elf/5.2.0/../../../../../H-x86_64-mingw32/nios2-elf/bin/ld.exe: Disabling relaxation: it will not work with multiple definitions
+../C_eng_job_bsp/\libhal_bsp.a(alt_main.o): In function `alt_main':
+alt_main.c:(.text+0x30): warning: warning: close is not implemented and will always fail
 collect2.exe: error: ld returned 1 exit status
 make: *** [C_eng_job.elf] Error 1
 
-22:56:07 Build Finished (took 2s.815ms)
+23:10:05 Build Finished (took 1s.830ms)
 
